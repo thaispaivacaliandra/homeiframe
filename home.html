@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssistentEdu - Secretaria Virtual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .header-106 {
+            background: black;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 2px solid #3a8cc1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            border: 8px solid #2a2a2a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 14px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #1a1a1a;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .chat-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border: none;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #444;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .refresh-btn {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border: none;
+            color: white;
+        }
+
+        .refresh-btn:hover {
+            background: #444;
+        }
+
+        .iframe-container {
+            flex: 1;
+            position: relative;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .chat-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #1a1a1a;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        .quick-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            background: #444;
+        }
+
+        .chat-footer {
+            background: #1a1a1a;
+            padding: 10px 20px 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            border-top: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsivo para telas menores */
+        @media (max-width: 400px) {
+            body {
+                padding: 0;
+            }
+            
+            .phone-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+        }
+
+        @media (max-width: 768px) and (min-width: 401px) {
+            .phone-container {
+                width: 90vw;
+                height: 90vh;
+                max-width: 400px;
+                max-height: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar">
+            <div class="notch"></div>
+        </div>
+
+        <div class="chat-header">
+
+        </div>
+
+        <div class="iframe-container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Carregando assistente...</p>
+            </div>
+
+            <!-- IFRAME DO COPILOT STUDIO -->
+            <iframe 
+                class="chat-iframe"
+                src="https://copilotstudio.microsoft.com/environments/5ac7d7e4-53b2-ec24-9d18-9ee871da5be2/bots/crc43_assistentEdu/webchat?__version__=2"
+                title="AssistentEdu"
+                onload="hideLoading()"
+                style="display: none;">
+            </iframe>
+        </div>
+
+        <div class="chat-footer">
+            <div class="contact-info">
+                <span>📞 (11) 1234-5678</span>
+                <span>📧 secretaria@escola.edu.br</span>
+                <span>🕒 Seg-Sex 8h-17h</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            const iframe = document.querySelector('.chat-iframe');
+            
+            loading.style.display = 'none';
+            iframe.style.display = 'block';
+        }
+
+        function sendMessage(message) {
+            // Função para enviar mensagens para o iframe
+            // Como não podemos controlar diretamente o iframe externo,
+            // vamos mostrar um alert com a instrução
+            alert('Digite no chat: ' + message);
+        }
+
+        // Fallback se iframe não carregar
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            const iframe = document.querySelector('.chat-iframe');
+            
+            if (loading.style.display !== 'none') {
+                loading.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: white;">
+                        <h3 style="color: #ccc; margin-bottom: 10px;">Conectando...</h3>
+                        <p style="color: #888; margin-bottom: 15px;">Aguarde um momento.</p>
+                        <button onclick="location.reload()" style="background: #4facfe; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                            Tentar novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }, 8000);
+
+        // Detectar cliques nos botões de ação rápida
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tentar comunicar com o iframe (funciona apenas se for do mesmo domínio)
+            const iframe = document.querySelector('.chat-iframe');
+            
+            // Event listeners para os botões
+            const quickButtons = document.querySelectorAll('.quick-btn');
+            quickButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const message = this.textContent;
+                    // Aqui você pode tentar implementar comunicação com o iframe
+                    console.log('Botão clicado:', message);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
